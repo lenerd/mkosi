@@ -708,7 +708,7 @@ def enable_networkd(workspace):
     with open(os.path.join(workspace, "root", "etc/systemd/network/all-ethernet.network"), "w") as f:
         f.write("""\
 [Match]
-Type=ether
+Name=en*
 
 [Network]
 DHCP=yes
