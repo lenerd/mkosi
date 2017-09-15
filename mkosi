@@ -1040,6 +1040,8 @@ SigLevel    = Required DatabaseOptional
                  "pcmciautils",
                  "reiserfsprogs",
                  "xfsprogs"}
+    packages.remove("linux")
+    packages.add("linux-hardened")
 
     if args.bootable:
         if args.output_format == OutputFormat.raw_gpt:
@@ -1047,8 +1049,8 @@ SigLevel    = Required DatabaseOptional
         elif args.output_format == OutputFormat.raw_btrfs:
             packages.add("btrfs-progs")
     else:
-        if "linux" in packages:
-            packages.remove("linux")
+        if "linux-hardened" in packages:
+            packages.remove("linux-hardened")
 
     if args.packages is not None:
         packages |= set(args.packages)
@@ -1240,7 +1242,7 @@ def install_boot_loader_arch(args, workspace):
     kernel_version = next(filter(lambda x: x[0].isdigit(), os.listdir(os.path.join(workspace, "root", "lib/modules"))))
 
     run_workspace_command(args, workspace,
-                      "/usr/bin/kernel-install", "add", kernel_version, "/boot/vmlinuz-linux")
+                      "/usr/bin/kernel-install", "add", kernel_version, "/boot/vmlinuz-linux-hardened")
 
 def install_boot_loader_debian(args, workspace):
     kernel_version = next(filter(lambda x: x[0].isdigit(), os.listdir(os.path.join(workspace, "root", "lib/modules"))))
